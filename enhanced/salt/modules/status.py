@@ -1845,7 +1845,7 @@ def my_uptime():
     :python:  version 3.0 and above.
 
     Returns a list of Uptime and Load Average in human readable format
-    rather than split values as printed by 'status.uptime' module.
+     rather than split values as printed by 'status.uptime' module.
 
     CLI Example:
 
@@ -1867,6 +1867,7 @@ def last_reboots(count=None,kernel=None):
     :python:  version 3.0 and above.
 
     Returns a list of date/time of n no of occurence of reboots.
+
     If no argument is passed or only count argument is set to 0(zero),
      it defaults to show last 5 reboots with arguments as count=5 and kernel=None.
  
@@ -1874,7 +1875,7 @@ def last_reboots(count=None,kernel=None):
      or last "n" no of server reboots.
 
     If both count and kernel arguments are passed, it returns a list of reboot results
-    with the kernels used by the server at the reboot time.
+     with the kernels used by the server at the reboot time.
 
     CLI Examole:
 
