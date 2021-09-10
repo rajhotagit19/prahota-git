@@ -1842,7 +1842,7 @@ def time_(format="%A, %d. %B %Y %I:%M%p"):
 def my_uptime():
     """
     :platform: Linux.
-    :python:  version 3.0 and more 
+    :python:  version 3.0 and above.
 
     Returns a list of Uptime and Load Average in human readable format
     rather than split values as printed by 'status.uptime' module.
@@ -1864,13 +1864,13 @@ def my_uptime():
 def last_reboots(count=None,kernel=None):
     """
     :platform: Linux.
-    :python:  version 3.0 and more 
+    :python:  version 3.0 and above.
 
     Returns a list of date/time of n no of occurence of reboots.
-    If no argument is passed or only count argument is set to 0(zero), 
+    If no argument is passed or only count argument is set to 0(zero),
      it defaults to show last 5 reboots with arguments as count=5 and kernel=None.
-    
-    If count arg set to number 1 or more than it, it returns data for last immediate 
+ 
+    If count arg set to number 1 or more than it, it returns data for last immediate
      or last "n" no of server reboots.
 
     If both count and kernel arguments are passed, it returns a list of reboot results
@@ -1881,7 +1881,7 @@ def last_reboots(count=None,kernel=None):
     .. code-block:: bash
 
         salt '*' status.last_reboots
-        salt '*' status.last_reboots 1 
+        salt '*' status.last_reboots 1
         salt '*' status.last_reboots 10 kernel
     """
 
