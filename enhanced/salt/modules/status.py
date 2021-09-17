@@ -1855,8 +1855,9 @@ def my_uptime():
     """
 
     #return 'uptime: ' + str(sp.Popen(["uptime -p"], stdout=sp.PIPE, shell=True).communicate()).split('up ')[1].split('\\n')[0]
-    out = str(sp.Popen(["uptime"], stdout=sp.PIPE, shell=True).communicate())
-    return  { 'Uptime'  : out[0:out.find("user")][:-3].split(" up ")[1][:-2].strip(),
+    #out = str(sp.Popen(["uptime"], stdout=sp.PIPE, shell=True).communicate())
+    out = __salt__["cmd.run"]("uptime")
+    return  { 'Uptime' : out[0:out.find("user")][:-3].split(" up ")[1][:-2].strip(),
               'loadavg' : out.split('load average: ')[1].split('\\n')[0].strip(),
             }
 
@@ -1892,6 +1893,7 @@ def last_reboots(count=None,kernel=None):
       count=5
 
     out = sp.Popen(["last -F | grep reb | head -{}".format(count)], stdout=sp.PIPE, shell=True).communicate()[0].splitlines()
+    #out = __salt__["cmd.run"]("last -F | grep reb | head -{}".format(count)).splitlines()
 
     for line in out:
       if not kernel:
