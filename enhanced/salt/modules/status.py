@@ -11,7 +11,7 @@ import logging
 import os
 import re
 import time
-import subprocess as sp
+#import subprocess as sp
 
 import salt.config
 import salt.minion
@@ -1892,15 +1892,19 @@ def last_reboots(count=None,kernel=None):
     if not count:
       count=5
 
-    out = sp.Popen(["last -F | grep reb | head -{}".format(count)], stdout=sp.PIPE, shell=True).communicate()[0].splitlines()
-    #out = __salt__["cmd.run"]("last -F | grep reb | head -{}".format(count)).splitlines()
+    if type(count) != int:
+      return { "Info": "read salt '*' sys.doc status.last_reboots" }
+
+    #out = sp.Popen(["last -F | grep reb | head -{}".format(count)], stdout=sp.PIPE, shell=True).communicate()[0].splitlines()
+    cmd = 'last -F | grep reb | head -{}'.format(count)
+    out = __salt__["cmd.run"](cmd, python_shell=True).splitlines()
 
     for line in out:
       if not kernel:
-        var = re.sub("reboot   system boot\s+\S+\s+", "reboot system ", str(line)).split("'")[1].replace("   still running", " - running")
+        var = re.sub("reboot   system boot\s+\S+\s+", "reboot system ", line).replace("   still", " - still")
         res.append(var)
       elif count and kernel == "kernel":
-        var = re.sub("reboot   system boot", "reboot system", str(line)).split("'")[1].replace("   still running", " - running")
+        var = re.sub("reboot   system boot", "reboot system", line).replace("   still", " - still")
         res.append(var)
 
     if len(res) != 0:
