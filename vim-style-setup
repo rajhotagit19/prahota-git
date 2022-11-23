@@ -1,0 +1,20 @@
+
+Copy and paste these values in `.vimrc` file under HOME directory and vim must
+be installed in the system, then `VIM` editor will provide a good look.
+If `vim` is not installed, then the file is `.exrc` which would have few similar
+functinality embeded into `vi` command, like `vim` command.
+
+```
+$ cat .vimrc
+set bg=dark
+set autoindent
+set expandtab ts=2 sw=2
+set backspace=indent,eol,start
+set nu cursorcolumn cul
+set colorcolumn=80
+$
+```
+
+Anothe way:-
+Select the a paragraph in visual mode and then select `gq` which would set
+the paragraph in wrap mode.
