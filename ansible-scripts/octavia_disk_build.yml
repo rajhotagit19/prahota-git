@@ -1,0 +1,52 @@
+---
+## Reference: https://github.com/openstack/octavia/blob/master/diskimage-create/README.rst
+## I have designed it especially to by-pass the installation of openssh-server
+## that gets installed by elements/amphora-agent directory.
+##
+
+- name: Build Amphora image from Openstack octavia diskimage create repo
+  hosts: localhost
+  vars:
+    app_dir: '/opt/octavia/diskimage-create/'
+    venv_dir: '/opt/octavia_disk_venv'
+
+  tasks:
+    - name: Clone Octavia master
+      ansible.builtin.git:
+        repo: 'https://github.com/openstack/octavia.git'
+        dest: /opt/octavia
+        single_branch: yes
+        version: master
+        update: no
+
+    - name: Create virtualenv
+      pip:
+        virtualenv: "{{ venv_dir }}"
+        requirements: '{{ app_dir }}/requirements.txt'
+
+    - name: Install packages required for diskbuilder
+      apt:
+        pkg: "{{ item }}"
+        state: latest
+        update_cache: true
+      with_items:
+        - qemu-utils
+        - git
+        - kpartx
+        - debootstrap
+
+    - name: Set read perms on kernels
+      ansible.builtin.shell: 'chmod 0644 /boot/vmlinuz*'
+
+    - name: Activate Virtual env
+      ansible.builtin.shell: 'source {{ venv_dir }}/bin/activate'
+      args:
+        executable: /bin/bash
+      register: venv_pip_mods
+
+    - name: Now go ahead build the image for Amphora
+      ansible.builtin.shell: '{{ app_dir }}/diskimage-create.sh -i ubuntu-minimal -o nossh_from_ansibleplay.qcow2 -n'
+      args:
+        executable: /bin/bash
+      delegate_to: localhost
+      run_once: true
